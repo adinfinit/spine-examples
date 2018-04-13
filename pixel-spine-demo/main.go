@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/adinfinit/spine-demo/animation"
+	"github.com/adinfinit/spine-examples/animation"
 	"github.com/golang/freetype/truetype"
 
 	"github.com/faiface/pixel"
