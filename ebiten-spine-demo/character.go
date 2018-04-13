@@ -164,6 +164,7 @@ func (char *Character) Draw(target *ebiten.Image) {
 			box := m.Bounds()
 
 			var flipped ebiten.GeoM
+			flipped.Translate(-float64(box.Dx())*0.5, -float64(box.Dy())*0.5)
 			flipped.Scale(1, -1)
 			flipped.Concat(geom)
 
