@@ -153,7 +153,7 @@ func (char *Character) Draw(win pixel.Target) {
 
 			pd := char.GetImage(attachment.Name, attachment.Path)
 			sprite := pixel.NewSprite(pd, pd.Rect)
-			sprite.DrawColorMask(win, xform, attachment.Color)
+			sprite.DrawColorMask(win, xform, slot.Color)
 
 		case *spine.MeshAttachment:
 			pd := char.GetImage(attachment.Name, attachment.Path)
@@ -169,12 +169,18 @@ func (char *Character) Draw(win pixel.Target) {
 					uv.Y = 1 - uv.Y
 					tri.Picture = uv.V()
 					tri.Picture = tri.Picture.ScaledXY(size)
-					tri.Intensity = 1
 				}
 			}
 
+			var col pixel.RGBA
+			col.R, col.G, col.B, col.A = slot.Color.RGBA64()
+			for i := range *tridata {
+				tri := &(*tridata)[i]
+				tri.Color = col
+				tri.Intensity = 1
+			}
+
 			batch := pixel.NewBatch(tridata, pd)
-			batch.SetColorMask(attachment.Color)
 			batch.Draw(win)
 		default:
 			panic(fmt.Sprintf("unknown attachment %v", attachment))

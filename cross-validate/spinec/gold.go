@@ -217,6 +217,7 @@ func readFrame(time float32, skeleton *C.spSkeleton) gold.Frame {
 		gslot := gold.Slot{}
 
 		gslot.Name = C.GoString(slot.data.name)
+		gslot.Color.R, gslot.Color.G, gslot.Color.B, gslot.Color.A = float32(slot.color.r), float32(slot.color.g), float32(slot.color.b), float32(slot.color.a)
 		if slot.attachment != nil {
 			gslot.Attachment = C.GoString(slot.attachment.name)
 		}

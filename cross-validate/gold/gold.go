@@ -75,6 +75,8 @@ func LocalWorldCompare(a, b *Bone) string {
 type Slot struct {
 	Name string
 
+	Color struct{ R, G, B, A float32 }
+
 	Attachment         string
 	AttachmentVertices []float32
 }
