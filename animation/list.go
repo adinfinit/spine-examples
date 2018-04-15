@@ -21,7 +21,7 @@ var list = []Location{
 	{"Speedy", "speedy", "speedy-ess.json", "speedy.atlas", ""},
 	{"Spineboy", "spineboy", "spineboy-ess.json", "spineboy.atlas", ""},
 	{"Spineboy Pro", "spineboy", "spineboy-pro.json", "spineboy.atlas", ""},
-	{"Spinosaurus", "spinosaurus", "spinosaurus-ess.json", "spinosaurus.atlas", ""},
+	{"Spinosaurus", "spinosaurus", "spinosaurus-ess.json", "spinosaurus-ess.atlas", ""},
 	{"Stretchyman", "stretchyman", "stretchyman-pro.json", "stretchyman.atlas", ""},
 	{"Tank", "tank", "tank-pro.json", "tank.atlas", ""},
 	{"Vine", "vine", "vine-pro.json", "vine.atlas", ""},

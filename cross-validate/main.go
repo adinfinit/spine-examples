@@ -216,8 +216,10 @@ func parseSpineGo(content []byte) (gold.Skeleton, error) {
 			gskeleton.UpdateOrder = append(gskeleton.UpdateOrder, "B:"+updater.GetName())
 		case *spine.TransformConstraint:
 			gskeleton.UpdateOrder = append(gskeleton.UpdateOrder, "T:"+updater.GetName())
-			// case *spine.IKConstraint:
-			// case *spine.PathConstraint:
+		case *spine.IKConstraint:
+			gskeleton.UpdateOrder = append(gskeleton.UpdateOrder, "I:"+updater.GetName())
+		case *spine.PathConstraint:
+			gskeleton.UpdateOrder = append(gskeleton.UpdateOrder, "P:"+updater.GetName())
 		default:
 			panic(updatable)
 		}
