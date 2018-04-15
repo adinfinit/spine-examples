@@ -168,10 +168,13 @@ func (char *Character) Draw(target *ebiten.Image) {
 			flipped.Scale(1, -1)
 			flipped.Concat(geom)
 
+			var colorm ebiten.ColorM
+			colorm.Scale(slot.Color.NRGBA64())
+
 			target.DrawImage(m, &ebiten.DrawImageOptions{
 				SourceRect: &box,
 				GeoM:       flipped,
-				ColorM:     ebiten.ScaleColor(slot.Color.Float64()),
+				ColorM:     colorm,
 			})
 
 		case *spine.MeshAttachment:
