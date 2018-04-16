@@ -144,8 +144,30 @@ func (char *Character) GetImage(attachment, path string) *pixel.PictureData {
 	return pd
 }
 
-func (char *Character) Draw(win pixel.Target) {
+func (char *Character) Draw(win pixel.ComposeTarget) {
+	// BUG: no way to get the current compose method for restoring
+	defer win.SetComposeMethod(pixel.ComposeOver)
+
 	for _, slot := range char.Skeleton.Order {
+		win.SetComposeMethod(pixel.ComposeOver)
+		/*
+			switch slot.Data.Blend {
+			case spine.Normal:
+				win.SetComposeMethod(pixel.ComposeOver)
+			case spine.Additive:
+				// MISSING
+				win.SetComposeMethod(pixel.ComposePlu)
+			case spine.Multiply:
+				// MISSING
+				win.SetComposeMethod(pixel.ComposeOver)
+			case spine.Screen:
+				// MISSING
+				win.SetComposeMethod(pixel.ComposePlus)
+			default:
+				win.SetComposeMethod(pixel.ComposeOver)
+			}
+		*/
+
 		bone := slot.Bone
 		switch attachment := slot.Attachment.(type) {
 		case nil:
@@ -155,6 +177,7 @@ func (char *Character) Draw(win pixel.Target) {
 
 			pd := char.GetImage(attachment.Name, attachment.Path)
 			sprite := pixel.NewSprite(pd, pd.Rect)
+
 			sprite.DrawColorMask(win, xform, slot.Color)
 
 		case *spine.MeshAttachment:
