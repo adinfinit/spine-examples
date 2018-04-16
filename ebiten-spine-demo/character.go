@@ -194,42 +194,4 @@ func (char *Character) Draw(target *ebiten.Image) {
 			panic(fmt.Sprintf("unknown attachment %v", attachment))
 		}
 	}
-	/*
-		imd := imdraw.New(nil)
-		defer imd.Draw(win)
-
-		if char.DebugBones {
-			for _, bone := range char.Skeleton.Bones {
-				h := float64(bone.Data.Length)
-				if h < 10 {
-					h = 10
-				}
-
-				imd.SetMatrix(pixel.Matrix(bone.World.Col64()))
-				imd.Color = bone.Data.Color.WithAlpha(0.5)
-
-				w := h * 0.1
-				imd.Push(pixel.V(h, 0))
-				imd.Push(pixel.V(w+w, -w))
-				imd.Push(pixel.V(w+w, w))
-				imd.Polygon(0)
-
-				if bone.Parent != nil {
-					imd.SetMatrix(pixel.IM)
-					a := pixel.Vec(bone.World.Translation().V())
-					b := pixel.Vec(bone.Parent.World.Transform(spine.Vector{bone.Parent.Data.Length, 0}).V())
-					imd.Push(a)
-					imd.Push(b)
-					imd.Line(1)
-				}
-			}
-		}
-
-		if char.DebugCenter {
-			imd.SetMatrix(pixel.Matrix(char.Skeleton.World().Col64()))
-			imd.Color = pixel.RGB(0, 0, 1)
-			imd.Push(pixel.Vec{})
-			imd.Circle(20, 2)
-		}
-	*/
 }
