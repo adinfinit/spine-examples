@@ -9,6 +9,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"github.com/hajimehoshi/ebiten/inpututil"
 )
 
 const (
@@ -50,39 +51,27 @@ skip:
 	}
 }
 
-var wasPressed [256]bool
-
-func justpressed(key ebiten.Key) bool {
-	ispressed := ebiten.IsKeyPressed(key)
-	if !wasPressed[key] && ispressed {
-		wasPressed[key] = true
-		return true
-	}
-	wasPressed[key] = ispressed
-	return false
-}
-
 func update(screen *ebiten.Image) error {
-	if justpressed(ebiten.KeyUp) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
 		characterIndex = (characterIndex + len(characters) - 1) % len(characters)
 		character = characters[characterIndex]
 	}
-	if justpressed(ebiten.KeyDown) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
 		characterIndex = (characterIndex + len(characters) + 1) % len(characters)
 		character = characters[characterIndex]
 	}
 
-	if justpressed(ebiten.KeyLeft) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
 		character.NextAnimation(-1)
 	}
-	if justpressed(ebiten.KeyRight) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyRight) {
 		character.NextAnimation(1)
 	}
 
-	if justpressed(ebiten.KeyW) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyW) {
 		character.NextSkin(-1)
 	}
-	if justpressed(ebiten.KeyS) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
 		character.NextSkin(1)
 	}
 
