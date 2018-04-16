@@ -26,7 +26,10 @@ func ReadSpineC(loc animation.Location) (gold.Skeleton, error) {
 		return gold.Skeleton{}, err
 	}
 
-	gskeleton, err := spinec.Gold(loc.Dir, string(atlas), string(content))
+	var x, y, scale, rotation float32
+	scale = (float32)(*rootScale)
+
+	gskeleton, err := spinec.Gold(loc.Dir, string(atlas), string(content), x, y, scale, rotation)
 	if err != nil {
 		return gold.Skeleton{}, err
 	}
@@ -57,6 +60,8 @@ var (
 	selectAnimation = flag.String("animation-", "", "select animation")
 	selectFrame     = flag.Int("frame-", -1, "select frame")
 	selectBone      = flag.String("bone-", "", "select bone")
+
+	rootScale = flag.Float64("scale", 1, "scaling factor")
 )
 
 func main() {
@@ -179,6 +184,8 @@ func parseSpineGo(content []byte) (gold.Skeleton, error) {
 	skeleton.FlipY = true
 
 	skeleton.SetToSetupPose()
+	scale := float32(*rootScale)
+	skeleton.Local.Scale.Set(scale, scale)
 	skeleton.Update()
 
 	gskeleton.Setup = readFrame(0, skeleton)

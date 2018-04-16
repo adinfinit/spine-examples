@@ -61,7 +61,7 @@ import (
 //    } _spUpdate2;
 import "C"
 
-func Gold(dir string, atlasstr string, data string) (gold.Skeleton, error) {
+func Gold(dir string, atlasstr string, data string, x, y, scale, rotation float32) (gold.Skeleton, error) {
 	gskeleton := gold.Skeleton{}
 	gskeleton.HasLocal = true
 	gskeleton.HasAffineWorld = true
@@ -97,6 +97,11 @@ func Gold(dir string, atlasstr string, data string) (gold.Skeleton, error) {
 	defer C.spSkeleton_dispose(skeleton)
 
 	skeleton.flipY = 1
+	skeleton.x = (C.float)(x)
+	skeleton.y = (C.float)(y)
+	skeleton.root.scaleX = (C.float)(scale)
+	skeleton.root.scaleY = (C.float)(scale)
+	skeleton.root.rotation = (C.float)(rotation)
 
 	C.spSkeleton_setToSetupPose(skeleton)
 	C.spSkeleton_updateWorldTransform(skeleton)
