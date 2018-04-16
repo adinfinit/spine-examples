@@ -81,6 +81,7 @@ func (char *Character) NextAnimation(offset int) {
 	}
 	char.AnimationIndex = char.AnimationIndex % len(char.Skeleton.Data.Animations)
 	char.Animation = char.Skeleton.Data.Animations[char.AnimationIndex]
+	char.Skeleton.SetToSetupPose()
 	char.Skeleton.Update()
 }
 
@@ -91,6 +92,7 @@ func (char *Character) NextSkin(offset int) {
 	}
 	char.SkinIndex = char.SkinIndex % len(char.Skeleton.Data.Skins)
 	char.Skeleton.Skin = char.Skeleton.Data.Skins[char.SkinIndex]
+	char.Skeleton.SetToSetupPose()
 	char.Skeleton.Update()
 	char.Skeleton.UpdateAttachments()
 }
@@ -99,8 +101,9 @@ func (char *Character) Update(dt float64, x, y float64) {
 		char.Time += dt * char.Speed
 	}
 
-	char.Animation.Apply(char.Skeleton, float32(char.Time), true)
 	char.Skeleton.Local.Translate.Set(float32(x), float32(y))
+	// char.Skeleton.Local.Scale.Set(0.5, 0.5)
+	char.Animation.Apply(char.Skeleton, float32(char.Time), true)
 	char.Skeleton.Update()
 }
 
