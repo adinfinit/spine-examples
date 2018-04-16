@@ -155,6 +155,7 @@ func (char *Character) Draw(target *ebiten.Image) {
 			local := attachment.Local.Affine()
 			final := bone.World.Mul(local)
 
+			// BUG: inconvenient
 			var geom ebiten.GeoM
 			geom.SetElement(0, 0, float64(final.M00))
 			geom.SetElement(0, 1, float64(final.M01))
@@ -166,43 +167,29 @@ func (char *Character) Draw(target *ebiten.Image) {
 			m := char.GetImage(attachment.Name, attachment.Path)
 			box := m.Bounds()
 
-			var flipped ebiten.GeoM
-			flipped.Translate(-float64(box.Dx())*0.5, -float64(box.Dy())*0.5)
-			flipped.Scale(1, -1)
-			flipped.Concat(geom)
+			var draw ebiten.DrawImageOptions
+			// flip image and set origin to center
+			draw.GeoM.Translate(-float64(box.Dx())*0.5, -float64(box.Dy())*0.5)
+			draw.GeoM.Scale(1, -1)
+			draw.GeoM.Concat(geom)
+			// tint the texture
+			draw.ColorM.Scale(slot.Color.NRGBA64())
 
-			var colorm ebiten.ColorM
-			colorm.Scale(slot.Color.NRGBA64())
+			// set blending mode
+			// BUG: incorrect, should use blending mode not compositing mode
+			switch slot.Data.Blend {
+			case spine.Normal:
+				// MISSING
+			case spine.Additive:
+				draw.CompositeMode = ebiten.CompositeModeLighter
+			case spine.Multiply:
+				// MISSING
+			case spine.Screen:
+				// MISSING
+				draw.CompositeMode = ebiten.CompositeModeLighter
+			}
 
-			target.DrawImage(m, &ebiten.DrawImageOptions{
-				SourceRect: &box,
-				GeoM:       flipped,
-				ColorM:     colorm,
-			})
-
-		case *spine.MeshAttachment:
-			/*
-				pd := char.GetImage(attachment.Name, attachment.Path)
-				size := pd.Bounds().Size()
-
-				worldPosition := attachment.CalculateWorldVertices(char.Skeleton, slot)
-				tridata := pixel.MakeTrianglesData(len(attachment.Triangles) * 3)
-				for base, tri := range attachment.Triangles {
-					for k, index := range tri {
-						tri := &(*tridata)[base*3+k]
-						tri.Position = worldPosition[index].V()
-						uv := attachment.UV[index]
-						uv.Y = 1 - uv.Y
-						tri.Picture = uv.V()
-						tri.Picture = tri.Picture.ScaledXY(size)
-						tri.Intensity = 1
-					}
-				}
-
-				batch := pixel.NewBatch(tridata, pd)
-				batch.SetColorMask(attachment.Color)
-				batch.Draw(win)
-			*/
+			target.DrawImage(m, &draw)
 		default:
 			panic(fmt.Sprintf("unknown attachment %v", attachment))
 		}
